@@ -1,12 +1,13 @@
-# from selenium import webdriver
-# import time
+from selenium import webdriver
+import platform
+import time
 
-# browser = webdriver.Chrome('./chromedriver.exe')
+if "linux" in platform.platform().lower():
+	PATH = "./chromedriver"
+else:
+	PATH = "./chromedriver.exe"
+browser = webdriver.Chrome(PATH)
 
-#browser.get("https://youtube.com")
-
-#time.sleep(10)
-#browser.close()
-
-
-import pygame
+browser.get("https://www.youtube.com")
+time.sleep(10)
+browser.close()
