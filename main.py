@@ -6,8 +6,9 @@ if "linux" in platform.platform().lower():
 	PATH = "./chromedriver"
 else:
 	PATH = "./chromedriver.exe"
+
 browser = webdriver.Chrome(PATH)
 
-browser.get("https://www.youtube.com")
-time.sleep(10)
+browser.get("https://teams.microsoft.com/go#")
+time.sleep(5)
 browser.close()
