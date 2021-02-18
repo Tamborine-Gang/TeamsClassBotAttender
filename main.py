@@ -37,9 +37,9 @@ def login(username, password):
 	teams_mode_but.click()
 	
 # credentials loading
-with open('/home/aadishsaini/Documents/username', 'r') as f:
+with open('./username.txt', 'r') as f:
 	username = f.readlines()
-with open('/home/aadishsaini/Documents/password', 'r') as f:
+with open('./password.txt', 'r') as f:
 	password = f.readlines()
 
 # operating system detection for chromdriver
