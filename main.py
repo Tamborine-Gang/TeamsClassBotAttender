@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 import schedule
 import platform
@@ -107,9 +108,15 @@ class login:
 	def login(self, username, password):
 		username_in = self.browser.find_element_by_xpath('/html/body/div/form[1]/div/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div/input[1]')
 		username_in.send_keys(username)
-		n_but = self.browser.find_element_by_id('idSIButton9')
-		n_but.click()
+		time.sleep(1)
+		try:
+			n_but = WebDriverWait(self.browser, 10).until(
+				EC.presence_of_element_located((By.ID, "idSIButton9"))
+			)
+		finally:
+			n_but.click()
 		print("DONE USERNAME SUBMIT PROCESS")
+		time.sleep(1)
 		try:
 			pass_in = WebDriverWait(self.browser, 10).until(
 				EC.presence_of_element_located((By.XPATH, "/html/body/div/form[1]/div/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div[2]/div/div[2]/div/div[2]/input"))
@@ -119,6 +126,7 @@ class login:
 		s_but = self.browser.find_element_by_xpath("/html/body/div/form[1]/div/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div[2]/div/div[3]/div[2]/div/div/div/div/input")
 		s_but.click()
 		print("SUBMITTED THE PASSWORD")
+		time.sleep(1)
 		try:
 			no_but = WebDriverWait(self.browser, 10).until(
 				EC.presence_of_element_located((By.ID, "idBtn_Back"))
@@ -171,11 +179,9 @@ def join_class(driver, period):
 	print("POGPOGPOGPOG SUCCESFULLY JOINT CLASS")
 
 def leave_class(driver, period):
-	# focus
-	driver.send_keys(Keys.CONTROL)
+	driver.find_element_by_class_name("ts-calling-screen").click()
+	time.sleep(1)
 	driver.find_element_by_xpath('//*[@id="hangup-button"]').click()
-	time.sleep(5)
-	print('Left class', period)
 
 def scheduler(browser, lis):
 	print("TIME FOR DOING THE TASK")
@@ -183,11 +189,11 @@ def scheduler(browser, lis):
 		join_class(browser, a)
 		print("JOINT CLASS ", a)
 		print("NOW IN SLEEP MODE FOR 40 MINS UNTILL LEAVING CLASS")
-		time.sleep(2400)
+		time.sleep(2400) # 2400
 		leave_class(browser, a)
 		print("LEFT CLASS ", a)
 		print("NOW IN SLEEP MODE FOR 20 MINS UNTILL NEXT CLASS")
-		time.sleep(1200)
+		time.sleep(1200)  # 1200
 
 l = login()
 
