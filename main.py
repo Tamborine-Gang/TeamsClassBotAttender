@@ -8,64 +8,44 @@ from selenium.webdriver.common.by import By
 import schedule
 import platform
 import time
+import os
+from ui import ui
 from tkinter import *
 
-class ui(Tk):
-	def __init__(self):
-		super(ui, self).__init__()
-		self.layout()
-		self.window_decoration()
-		self.no_of_periods = 0
-		self.time = ''
-		self.periods = []
+list_dirs = os.listdir()
+def write_username(userName):
+	with open("username.txt", "w+") as f:
+		f.write(userName)
+	p_a.destroy()
 
-	def window_decoration(self):
-		self.title('Set timetable')
-		self.geometry('250x150')
+if "username.txt" in list_dirs:
+	pass
+else:
+	p_a = Tk()
+	l = Label(p_a, text = "Enter the username of your teams i'd").pack()
+	e = Entry(p_a)
+	e.pack()
+	button = Button(p_a, text = "Sublmit", command = lambda: write_username(e.get()))
+	button.pack()
+	p_a.mainloop()
 
-	def layout(self):
-		l = Label(self, text = "Welcome").pack()
-		l = Label(self, text = "Enter the number of periods...").pack()
-		e = Entry(self)
-		e.pack()
-		b = Button(self, text = "Submit", command = lambda: self.no_p_submit(e.get()))
-		b.pack()
+list_dirs = os.listdir()
+def write_password(passWord):
+	with open("password.txt", "w+") as f:
+		f.write(passWord)
+	p_a.destroy()
+		
+if "password.txt" in list_dirs:
+	pass
+else:
+	p_a = Tk()
+	l = Label(p_a, text = "Enter the password of your teams i'd").pack()
+	e = Entry(p_a)
+	e.pack()
+	button = Button(p_a, text = "Sublmit", command = lambda: write_password(e.get()))
+	button.pack()
+	p_a.mainloop()
 
-	def time_sub(self, t):
-		self.get_time.destroy()
-		self.time = t
-	
-	def ask_periods(self, n):
-		for a in range(n):
-			self.name = str(n)
-
-			self.name = Tk()
-			t = "Submit"
-
-			self.name.title("Enter the period")
-			l = Label(self.name, text = "Enter the period").pack()
-			e = Entry(self.name)
-			e.pack()
-			b = Button(self.name, text = t, command = lambda: self.period_sent(e.get()))
-			b.pack()
-
-			self.name.mainloop()
-		self.get_time =Tk()
-		l = Label(self.get_time, text = 'Enter the starting time of your classes...').pack()
-		e = Entry(self.get_time)
-		e.pack()
-		b = Button(self.get_time, text = 'Submit', command = lambda: self.time_sub(e.get()))
-		b.pack()
-		self.get_time.mainloop()
-
-	def no_p_submit(self,p):
-		self.destroy()
-		self.no_of_periods = int(p)
-		self.ask_periods(self.no_of_periods)
-
-	def period_sent(self, t):
-		self.name.destroy()
-		self.periods.append(t)
 
 print("LOADING THE UI")
 win = ui()
@@ -106,7 +86,7 @@ class login:
 			self.password = f.readlines()
 
 	def login(self, username, password):
-		username_in = self.browser.find_element_by_xpath('/html/body/div/form[1]/div/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div/div/div[2]/div[2]/div/input[1]')
+		username_in = self.browser.find_element_by_id('i0116')
 		username_in.send_keys(username)
 		time.sleep(1)
 		try:
@@ -116,14 +96,10 @@ class login:
 		finally:
 			n_but.click()
 		print("DONE USERNAME SUBMIT PROCESS")
-		time.sleep(1)
-		try:
-			pass_in = WebDriverWait(self.browser, 10).until(
-				EC.presence_of_element_located((By.XPATH, "/html/body/div/form[1]/div/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div[2]/div/div[2]/div/div[2]/input"))
-			)
-		finally:
-			pass_in.send_keys(password)
-		s_but = self.browser.find_element_by_xpath("/html/body/div/form[1]/div/div/div[2]/div/div/div[1]/div[2]/div[2]/div/div[2]/div/div[3]/div[2]/div/div/div/div/input")
+		time.sleep(5)
+		pass_in = self.browser.find_element_by_id('i0118')
+		pass_in.send_keys(password)
+		s_but = self.browser.find_element_by_id("idSIButton9")
 		s_but.click()
 		print("SUBMITTED THE PASSWORD")
 		time.sleep(1)
